@@ -29,6 +29,9 @@ move cgi.lib to the same directory as your solution
 All functionality will be part of the cgi namespace so
 that the code is more organized.
 
+Dont forget to add the lib file next to the EXE if running
+outside of visual studio.
+
 # Future plans:
 
 These are mostly ideas/suggestions, *might* get implemented:
