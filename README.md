@@ -1,7 +1,3 @@
-# Changes:
-* Tanuj Shrivastava
-	- (31/08/2021) [Basic I/O functionality]
-
 # Contents:
 * About
 * How to use
