@@ -8,37 +8,38 @@ namespace cgi
 {
 	namespace graphics
 	{
+		// Goes to the required position
 		void GoToXY(int column, int line);
+		// returns the character at the given position
 		char GetFromXY(int x, int y);
 
 		class CSprite
 		{
 			private:
-				int width;
-				int height;
+				size_t width;
+				size_t height;
 				std::vector<cgi::SColor> imageData;
 			public:
 				CSprite() = delete;
 				CSprite(CSprite&) = delete;
 				CSprite(std::string filepath);
 
-				unsigned int GetHeight()
+				size_t GetHeight()
 				{
 					return this->height;
 				}
-				unsigned int GetWidth()
+				size_t GetWidth()
 				{
 					return this->width;
 				}
 
-				SColor GetPixel(int x, int y)
+				SColor GetPixel(size_t x, size_t y)
 				{
-
-						return imageData.at(width * y + x);
-
+					return imageData.at(width * y + x);
 				}
 		};
 
-		void DrawImage(CSprite& sprite, int x, int y);
+		// Draws the sprite at the given position
+		void DrawImage(CSprite& sprite, size_t x, size_t y);
 	}
 }

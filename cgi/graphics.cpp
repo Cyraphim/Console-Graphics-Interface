@@ -28,7 +28,6 @@ namespace cgi
         char GetFromXY(int x, int y)
         {
             GoToXY(x, y);
-            char buf[BUFSIZ];
             CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
             HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
             GetConsoleScreenBufferInfo(hConsole, &csbiInfo);
@@ -44,21 +43,19 @@ namespace cgi
             return strFromConsole[0];
         }
 
-        void DrawImage(CSprite& sprite, int x, int y)
+        void DrawImage(CSprite& sprite, size_t x, size_t y)
         {
-            for(int i = 0; i < sprite.GetHeight(); i++)
+            for(size_t imgY = 0; imgY < sprite.GetHeight(); imgY++)
             {
-                for(int j = 0; j < sprite.GetWidth(); j++)
+                for(size_t imgX = 0; imgX < sprite.GetWidth(); imgX++)
                 {
-                    GoToXY(x + j, y + i);
+                    GoToXY(x + imgX, y + imgY);
 
-                    auto col = sprite.GetPixel(j, i);
+                    auto col = sprite.GetPixel(imgX, imgY);
+                    
                     if(col.r == 0 && col.g == 0 && col.b == 0)
                     {
-                        if(GetFromXY(x + j, y + i) == ' ')
-                        {
-                            cgi::PrintText(col, " ");
-                        }
+                        // Dont do anything
                     }
                     else
                     {
@@ -74,7 +71,7 @@ namespace cgi
                 this->width = 0;
                 this->height = 0;
                 int channels;
-                unsigned char* data = stbi_load(filepath.c_str(), &this->width, &this->height, &channels, 3);
+                unsigned char* data = stbi_load(filepath.c_str(), (int*)&this->width, (int*)&this->height, &channels, 3);
 
                 for (int i = 0; i < this->width * this->height * 3; i += 3)
                 {

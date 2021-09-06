@@ -80,10 +80,9 @@ namespace cgi
 
 	void PrintText(SColor color, const char* format, ...)
 	{
-
+		// Changes the console color
 		std::printf("\x1b[38;2;%d;%d;%dm", color.r, color.g, color.b);
 
-		// Get the variadic list and printf to allow formatting
 		va_list argptr;
 		va_start(argptr, format);
 			std::vprintf(format, argptr);
@@ -95,8 +94,8 @@ namespace cgi
 
 	void PrintText(int r, int g, int b, const char* format, ...)
 	{
+		// Changes the console color
 		std::printf("\x1b[38;2;%d;%d;%dm", r, g, b);
-		// Get the variadic list and printf to allow formatting
 		va_list argptr;
 		va_start(argptr, format);
 			std::vprintf(format, argptr);

@@ -26,7 +26,7 @@ namespace cgi
 		unsigned int b = 0;
 
 		SColor(unsigned int r, unsigned int g, unsigned int b):r(r), g(g), b(b){}
-	};
+	}; 
 
 	// Clears the Console Buffer
 	void ClearScreen();
