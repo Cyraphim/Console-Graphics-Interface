@@ -49,39 +49,33 @@ These are mostly ideas/suggestions, *might* get implemented:
 	    - CYAN
 	    - WHITE
 
-## cgi.h Functions:
-* void ClearScreen():
+## cgi.h Functions
+* void ClearScreen()
     - Clears the Console Buffer
 
-* char GetCharInput():
+* char GetCharInput()
     - Gets the next keyboard input from the player without
     waiting for an Return keypress
 
-*  template \<class T\> void GetInput(T& ref):
+*  template \<class T\> void GetInput(T& ref)
     - gets input via std::cin and puts it into ref
 
-* void PrintText(EColor color, std::string format, ...):
+* void PrintText(EColor color, std::string format, ...)
     - Prints the text in a printf() style with the added 
     option to choose what color we want to print with.
 
 * void NewLine()
     - Moves the cursor to the next line  
 
-## cgi/Cards.h Ennumerations:
+## cgi/Cards.h Ennumerations
 *ECardType:
     - CLUBS
     - SPADES
     - HEARTS
     - DIAMONDS
 
-## cgi/Cards.h Classes:
-* CCard:
-	-Copy and Default Constructor Destoryed
-	For safety, use CCard via pointers
-    -private:
-	- ECardType m_type
-	- unsigned int m_number
-    -public:
+## cgi/Cards.h Classes
+* CCard - Holds card data
 	- CCard(ECardType type, unsigned int number)
 	- std::string GetNumberString()
 	- unsigned int GetNumber()
@@ -90,7 +84,7 @@ These are mostly ideas/suggestions, *might* get implemented:
 	- void Draw(EColor color, int row)
 	    - Draws one row of the card
 
-## cgi/Cards.h Functions:
+## cgi/Cards.h Functions
 * void DrawCard(EColor color, CCard& card)
     - prints a full card on to the console
 
@@ -98,3 +92,20 @@ These are mostly ideas/suggestions, *might* get implemented:
  void DrawCards(EColor color, SetHolder& set)
     - prints a list of cards horizontally when provided
     with an iterable data structure (uses foreach loop)
+    
+## cgi/Graphics.h Classes
+* class CSprite - Holds image data
+	- CSprite(std::string filepath)
+	- int GetHeight()
+	- int GetWidth()
+	- SColor GetPixel(int x, int y)
+	
+## cgi/Graphics.h Functions
+* void GoToXY(int column, int line)
+	- Sets the position of the cursor, no real use 
+	  outside of debug information
+* char GetFromXY(int column, int line)
+	- Gets what is currently at the given position
+* void DrawImage(CSprite& sprite, int x, int y)
+	- Draws an image at the given x and y position
+	
