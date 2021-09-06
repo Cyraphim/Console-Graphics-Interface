@@ -5,17 +5,27 @@
 
 namespace cgi
 {
-	// Color code for Console Output
+	// DEPRECATED, USE SColor INSTEAD
 	enum class EColor
 	{
 		BLACK,
-		RED,
-		GREEN,
-		YELLOW,
-		BLUE,
-		MAGENTA,
-		CYAN,
-		WHITE
+			RED,
+			GREEN,
+			YELLOW,
+			BLUE,
+			MAGENTA,
+			CYAN,
+			WHITE
+	};
+
+	// Color code for Console Outputenum class EColor
+	struct SColor
+	{
+		unsigned int r = 0;
+		unsigned int g = 0;
+		unsigned int b = 0;
+
+		SColor(unsigned int r, unsigned int g, unsigned int b):r(r), g(g), b(b){}
 	};
 
 	// Clears the Console Buffer
@@ -51,6 +61,8 @@ namespace cgi
 	// Prints the text in a printf() style with the added
 	// option to choose what color we want to print with.
 	void PrintText(EColor color, const char* format, ...);
+	void PrintText(SColor color, const char* format, ...);
+	void PrintText(int r, int g, int b, const char* format, ...);
 
 	// Moves the cursor to the next line
 	void NewLine();

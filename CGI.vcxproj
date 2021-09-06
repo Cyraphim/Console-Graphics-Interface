@@ -144,6 +144,7 @@
     <ClInclude Include="cgi.h" />
     <ClInclude Include="cgi\cards.h" />
     <ClInclude Include="cgi\graphics.h" />
+    <ClInclude Include="cgi\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cgi.cpp" />

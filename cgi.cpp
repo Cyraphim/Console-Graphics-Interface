@@ -78,6 +78,33 @@ namespace cgi
 		std::cout << "\033[0m";
 	}
 
+	void PrintText(SColor color, const char* format, ...)
+	{
+
+		std::printf("\x1b[38;2;%d;%d;%dm", color.r, color.g, color.b);
+
+		// Get the variadic list and printf to allow formatting
+		va_list argptr;
+		va_start(argptr, format);
+			std::vprintf(format, argptr);
+		va_end(argptr);
+
+		std::cout << "\033[0m";
+
+	}
+
+	void PrintText(int r, int g, int b, const char* format, ...)
+	{
+		std::printf("\x1b[38;2;%d;%d;%dm", r, g, b);
+		// Get the variadic list and printf to allow formatting
+		va_list argptr;
+		va_start(argptr, format);
+			std::vprintf(format, argptr);
+		va_end(argptr);
+
+		std::cout << "\033[0m";
+	}
+
 	void NewLine()
 	{
 		std::cout << "\n";
