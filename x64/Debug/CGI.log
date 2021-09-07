@@ -1,4 +1,0 @@
-﻿  graphics.cpp
-C:\Users\daser\source\repos\CGI\Console-Graphics-Interface\cgi\graphics.cpp(43,36): warning C4244: 'return': conversion from 'TCHAR' to 'char', possible loss of data
-C:\Users\daser\source\repos\CGI\Console-Graphics-Interface\cgi\graphics.cpp(52,46): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-  CGI.vcxproj -> C:\Users\daser\source\repos\CGI\Console-Graphics-Interface\Debug\CGI.lib

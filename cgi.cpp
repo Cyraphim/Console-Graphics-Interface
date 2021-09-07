@@ -11,17 +11,7 @@ namespace cgi
 {
 	void ClearScreen()
 	{
-		HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-		CONSOLE_SCREEN_BUFFER_INFO csbi;
-		if (GetConsoleScreenBufferInfo(hConsoleOutput, &csbi))
-		{
-			CHAR_INFO fi = { ' ', csbi.wAttributes };
-			csbi.srWindow.Left = 0;
-			csbi.srWindow.Top = 0;
-			csbi.srWindow.Right = csbi.dwSize.X - 1;
-			csbi.srWindow.Bottom = csbi.dwSize.Y - 1;
-			ScrollConsoleScreenBufferW(hConsoleOutput, &csbi.srWindow, 0, csbi.dwSize, &fi);
-		}
+		system("cls");
 	}
 
 	void Pause()
@@ -34,6 +24,16 @@ namespace cgi
 		return _getch();
 	}
 
+	void PrintText(const char* format, ...)
+	{
+		// Get the variadic list and printf to allow formatting
+		va_list argptr;
+		va_start(argptr, format);
+		std::vprintf(format, argptr);
+		va_end(argptr);
+	}
+
+	// DEPRECATED
 	// Variadic functions yayyy
 	void PrintText(EColor color, const char* format, ...)
 	{

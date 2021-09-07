@@ -51,7 +51,7 @@ namespace cgi
 			return this->m_type;
 		}
 
-		void CCard::Draw(cgi::EColor color, int row)
+		void CCard::Draw(cgi::SColor color, int row)
 		{
 			//
 			// ************
@@ -95,7 +95,7 @@ namespace cgi
 		
 		}
 
-		void DrawCard(EColor color, CCard& card)
+		void DrawCard(SColor color, CCard& card)
 		{
 			for(int row = 0; row < 11; row++)
 			{

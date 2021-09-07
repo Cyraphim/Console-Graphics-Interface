@@ -141,12 +141,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="cgi\algorithm.h" />
     <ClInclude Include="cgi.h" />
     <ClInclude Include="cgi\cards.h" />
     <ClInclude Include="cgi\graphics.h" />
     <ClInclude Include="cgi\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cgi\algorithm.cpp" />
     <ClCompile Include="cgi.cpp" />
     <ClCompile Include="cgi\cards.cpp" />
     <ClCompile Include="cgi\graphics.cpp" />

@@ -60,6 +60,7 @@ namespace cgi
 
 	// Prints the text in a printf() style with the added
 	// option to choose what color we want to print with.
+	void PrintText(const char* format, ...);
 	void PrintText(EColor color, const char* format, ...);
 	void PrintText(SColor color, const char* format, ...);
 	void PrintText(int r, int g, int b, const char* format, ...);
