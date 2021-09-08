@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 namespace cgi
 {
@@ -21,12 +22,38 @@ namespace cgi
 	// Color code for Console Outputenum class EColor
 	struct SColor
 	{
+
+		static SColor const BLACK;
 		unsigned int r = 0;
 		unsigned int g = 0;
 		unsigned int b = 0;
 
 		SColor(unsigned int r, unsigned int g, unsigned int b):r(r), g(g), b(b){}
+
+		SColor()
+		{
+			SColor(0, 0, 0);
+		}
+
+		bool operator==(SColor const &other)
+		{
+			return (this->r == other.r && this->g == other.g && this->b == other.b);
+		}
+
+		bool operator!=(SColor const &other)
+		{
+			return (this->r != other.r || this->g != other.g || this->b != other.b);
+		}
+
+		// Convert a value to string
+		std::string toString()
+		{
+			std::ostringstream strout;
+			strout << "\x1b[38;2;" << r << ";" << g << ";" << b << "m";
+			return strout.str();
+		}
 	}; 
+
 
 	// Clears the Console Buffer
 	void ClearScreen();
@@ -58,6 +85,7 @@ namespace cgi
 	// Calls the Pause function as per the running OS
 	void Pause();
 
+	void PutChar(SColor color, char c);
 	// Prints the text in a printf() style with the added
 	// option to choose what color we want to print with.
 	void PrintText(const char* format, ...);

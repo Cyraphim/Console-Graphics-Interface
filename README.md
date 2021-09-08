@@ -31,6 +31,7 @@ outside of visual studio.
 # Future plans:
 
 These are mostly ideas/suggestions, *might* get implemented:
+* Performance improvements related to rendering
 * STL Helper functions (Shuffling, random selection, etc.)
 * Game Class that draws asynchronously
 * Console buffer with console sprites and graphics

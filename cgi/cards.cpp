@@ -5,6 +5,7 @@ namespace cgi
 {
 	namespace cards
 	{
+
 		CCard::CCard(ECardType type, unsigned int number)
 			: m_type(type), m_number(number)
 		{
