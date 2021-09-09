@@ -108,6 +108,13 @@ namespace cgi
 
         CConsoleBuffer::CConsoleBuffer()
         {
+            DWORD l_mode;
+            HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+            GetConsoleMode(hStdout, &l_mode);
+            SetConsoleMode(hStdout, l_mode |
+                ENABLE_VIRTUAL_TERMINAL_PROCESSING |
+                DISABLE_NEWLINE_AUTO_RETURN);
+
             SetConsoleOutputCP(65001);
             // Get the console width and height and create a buffer
             CONSOLE_SCREEN_BUFFER_INFO csbi;

@@ -31,82 +31,43 @@ outside of visual studio.
 # Future plans:
 
 These are mostly ideas/suggestions, *might* get implemented:
-* Performance improvements related to rendering
-* STL Helper functions (Shuffling, random selection, etc.)
+* Multithreaded Audio Interface
+	- Multichannel audio (like NES probably)
+	- Audio loading from file
+		- Format: 
+			COUNT::NOTE:SCALE:DURATION::...
+			 int ::enum: int :   int  ::...
+		- Example:
+			3:A:7:100::C#:7:150::E:7:200
+			3:W:0:100::W :0:050::W:0:000
+
+* Performance improvements
+	- Right now we load each row into a buffer 
+	  then we add the buffer to the a string and print that
+
+	  An Optimization could be to get rid of the intermediate
+	  buffer somehow, or better yet, instead of storing each
+	  color into an array if we had direct access to the buffer
+	  string that would solve all the problems
+
+	- A faster way to load images on to our buffer would also
+	  be a much needed optimization but it completely depends
+	  on how the buffer works
+
+	- We have a function called PerformanceTest that returns 
+	  the time a function took to execute in milliseconds. 
+	  The value for all the draws to the buffer as well as the 
+	  swapping should be below 16ms ideally
+
 * Game Class that draws asynchronously
-* Console buffer with console sprites and graphics
-* Simple Entity Component System for gameobjects
+	- Not a string necessity because the game class depends on 
+	  the kind of game made, this depends more on the entity 
+	  component system. If we do implement this we should try 
+	  to make the draw calls on a separate thread so that we our 
+	  main thread calculations arent paused
 
-# Documenation:
-    
-## cgi.h Enumerations:
-* EColor:
-	- BLACK
-	    - RED
-	    - GREEN
-	    - YELLOW
-	    - BLUE
-	    - MAGENTA
-	    - CYAN
-	    - WHITE
-
-## cgi.h Functions
-* void ClearScreen()
-    - Clears the Console Buffer
-
-* char GetCharInput()
-    - Gets the next keyboard input from the player without
-    waiting for an Return keypress
-
-*  template \<class T\> void GetInput(T& ref)
-    - gets input via std::cin and puts it into ref
-
-* void PrintText(EColor color, std::string format, ...)
-    - Prints the text in a printf() style with the added 
-    option to choose what color we want to print with.
-
-* void NewLine()
-    - Moves the cursor to the next line  
-
-## cgi/Cards.h Ennumerations
-*ECardType:
-    - CLUBS
-    - SPADES
-    - HEARTS
-    - DIAMONDS
-
-## cgi/Cards.h Classes
-* CCard - Holds card data
-	- CCard(ECardType type, unsigned int number)
-	- std::string GetNumberString()
-	- unsigned int GetNumber()
-	- std::string GetTypeString()
-	- ECardType GetType()
-	- void Draw(EColor color, int row)
-	    - Draws one row of the card
-
-## cgi/Cards.h Functions
-* void DrawCard(EColor color, CCard& card)
-    - prints a full card on to the console
-
-* template \<class SetHolder\>
- void DrawCards(EColor color, SetHolder& set)
-    - prints a list of cards horizontally when provided
-    with an iterable data structure (uses foreach loop)
-    
-## cgi/Graphics.h Classes
-* class CSprite - Holds image data
-	- CSprite(std::string filepath)
-	- int GetHeight()
-	- int GetWidth()
-	- SColor GetPixel(int x, int y)
-	
-## cgi/Graphics.h Functions
-* void GoToXY(int column, int line)
-	- Sets the position of the cursor, no real use 
-	  outside of debug information
-* char GetFromXY(int column, int line)
-	- Gets what is currently at the given position
-* void DrawImage(CSprite& sprite, int x, int y)
-	- Draws an image at the given x and y position
-	
+* An error messaging and debugging system
+	- We already print colored text onto the buffer but we also
+	  need a separate buffer that somehow displays the output 
+	  without disturbing the console. A shortcut to generate a 
+	  log dump would also be very useful

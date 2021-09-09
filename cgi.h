@@ -35,7 +35,7 @@ namespace cgi
 			return (this->r == other.r && this->g == other.g && this->b == other.b);
 		}
 
-		bool operator!=(SColor const &other)
+		bool operator!=(SColor const& other)
 		{
 			return (this->r != other.r || this->g != other.g || this->b != other.b);
 		}
@@ -51,10 +51,11 @@ namespace cgi
 
 	struct SVec2
 	{
-		int x;
-		int y;
+		double x;
+		double y;
 
-		SVec2(int x = 0, int y = 0) : x(x), y(y){}
+		SVec2(double x = 0, double y = 0) : x(x), y(y) {}
+		SVec2(int x = 0, int y = 0) : x(x), y(y) {}
 
 		bool operator==(SVec2 const& other)
 		{
@@ -64,6 +65,26 @@ namespace cgi
 		bool operator!=(SVec2 const& other)
 		{
 			return (this->x != other.x || this->y != other.y);
+		}
+
+		SVec2 operator-(SVec2 const& other)
+		{
+			return SVec2(this->x - other.x, this->y - other.y);
+		}
+
+		SVec2 operator+(SVec2 const& other)
+		{
+			return SVec2(this->x + other.x, this->y + other.y);
+		}
+
+		double Magnitude()
+		{
+			return std::sqrt(x * x + y * y);
+		}
+
+		double Distance(SVec2 const& other)
+		{
+			return (*this - other).Magnitude();
 		}
 	};
 
@@ -108,4 +129,22 @@ namespace cgi
 
 	// Moves the cursor to the next line
 	void NewLine();
+
+	template <class T>
+	void Increment(T& value, T min, T max)
+	{
+		value++;
+		max++;
+		value = (int) value % max;
+	}
+
+	template <class T>
+	void Decrement(T& value, T min, T max)
+	{
+		value--;
+		max++;
+		// % loops around for positive change
+		// this formula loops around for both positive and negative values
+		value = (((int)value - min) % (max - min) + max - min) % (max - min) + min;
+	}
 }
