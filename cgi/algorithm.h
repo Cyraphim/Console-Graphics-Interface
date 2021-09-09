@@ -70,11 +70,10 @@ namespace cgi
 
 		// DO NOT USE
 		// NOT CONFIRMED IF WORKING
-		template<class C, class ToReturn, typename... args>
-		long long PerformanceTest(std::function<ToReturn(C)> function, ToReturn* output, args... params)
+		long long PerformanceTest(std::function<void(void)> function)
 		{
 			auto start = std::chrono::steady_clock::now();
-			*output = fun(params);
+			function();
 			auto end = std::chrono::steady_clock::now();
 			return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 		}

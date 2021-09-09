@@ -41,10 +41,16 @@ namespace cgi
 				{
 					return imageData.at(width * y + x);
 				}
+
+				SColor GetPixel(SVec2 position)
+				{
+					return imageData.at(width * position.y + position.x);
+				}
 		};
 
 		// Draws the sprite at the given position
 		void DrawImage(CSprite& sprite, size_t x, size_t y);
+		void DrawImage(CSprite& sprite, SVec2 position);
 
 		// A double buffer used to draw onto the screen
 		// We use a singleton structure here because it works better that way
@@ -56,6 +62,8 @@ namespace cgi
             std::vector<SColor> m_consoleBuffer;
             size_t m_screenWidth;
             size_t m_screenHeight;
+
+			const char* m_drawChar;
 
         private:
             CConsoleBuffer();
@@ -77,17 +85,35 @@ namespace cgi
             void SwapBuffer();
 
 			// puts a pixel on the buffer at the position provided
-            void PutPixel(SColor color, int x, int y)
-            {
+			void PutPixel(SColor color, int x, int y)
+			{
 				auto pos = m_screenWidth * y + x;
-				if(pos >= 0 && pos < m_consoleBuffer.size() - 1 && x >= 0)
+				if (pos >= 0 && pos < m_consoleBuffer.size() - 1 && x >= 0)
 					m_consoleBuffer[m_screenWidth * y + x] = color;
-            }
+			}
+
+			void PutPixel(SColor& color, SVec2& position)
+			{
+				auto pos = m_screenWidth * position.y + position.x;
+				if (pos >= 0 && pos < m_consoleBuffer.size() - 1 && position.x >= 0)
+					m_consoleBuffer[pos] = color;
+			}
+
+			void ChangeDrawChar(const char* c)
+			{
+				m_drawChar = c;
+			}
 
 			// Gets the color at the given position
 			SColor GetPixel(int x, int y)
 			{
 				return this->m_consoleBuffer.at(y * m_screenWidth + x);
+			}
+
+			// Gets the color at the given position
+			SColor GetPixel(SVec2& position)
+			{
+				return this->m_consoleBuffer.at(position.y * m_screenWidth + position.x);
 			}
 
 			size_t GetWidth()

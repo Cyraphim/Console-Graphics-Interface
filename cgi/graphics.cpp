@@ -1,4 +1,4 @@
-#include "graphics.h"
+﻿#include "graphics.h"
 
 
 #define NOMINMAX
@@ -86,6 +86,11 @@ namespace cgi
             }
         }
 
+        void DrawImage(CSprite& sprite, SVec2 position)
+        {
+            DrawImage(sprite, position.x, position.y);
+        }
+
         CSprite::CSprite(std::string filepath)
         {
                 this->width = 0;
@@ -103,6 +108,7 @@ namespace cgi
 
         CConsoleBuffer::CConsoleBuffer()
         {
+            SetConsoleOutputCP(65001);
             // Get the console width and height and create a buffer
             CONSOLE_SCREEN_BUFFER_INFO csbi;
             GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
@@ -110,6 +116,8 @@ namespace cgi
             m_screenHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 
             m_consoleBuffer.insert(m_consoleBuffer.end(), m_screenWidth * m_screenHeight, SColor(0, 0, 0));
+
+            m_drawChar = u8"█";
         }
         void CConsoleBuffer::ClearBuffer()
         {
@@ -122,20 +130,22 @@ namespace cgi
 
         void CConsoleBuffer::SwapBuffer()
         {
-            // Clear the screen before drawing our new buffer
-            cgi::ClearScreen();
+            //NOTE:
+            // We currently use multithreading to append everything to a buffer string
+            // Then we attach all these strings together to create a final buffer
+            // and then we print that
+            //
+            // In a hypthothetical optimization I would try to get rid of the 
+            // intermediate buffer and append directly
 
-            std::mutex mtx;
             std::vector<std::thread> threads;
-
+            std::vector<std::string> buffer(m_screenHeight, "");
             for (size_t imgY = 0; imgY < m_screenHeight; imgY++)
             {
-                auto xLoop = [this, &mtx, imgY]()
+                auto xLoop = [&buffer, this, imgY]()
                 {
-                    bool printRow = false;
-
                     SColor col = this->GetPixel(0, imgY);
-                    std::string toPrint = col.toString();
+                    buffer[imgY].append(col.toString());
                     SColor prevcol = col;
 
                     for (size_t imgX = 0; imgX < m_screenWidth; imgX++)
@@ -143,29 +153,21 @@ namespace cgi
                         col = this->GetPixel(imgX, imgY);
                         if (col != SColor::BLACK)
                         {
-                            if(col != prevcol)
+                            if (col != prevcol)
                             {
-                                toPrint.append(col.toString());
+                                buffer[imgY].append(col.toString());
                                 prevcol = col;
                             }
-                            toPrint.append("#");
-                            printRow = true;
+                            buffer[imgY].append(m_drawChar);
                         }
                         else
                         {
-                            toPrint.append(" ");
+                            buffer[imgY].push_back(' ');
                         }
                     }
 
-                    if(printRow)
-                    {
-                        mtx.lock();
-
-                        GoToXY(0, imgY);
-                        cgi::PrintText(toPrint.append("\033[0m").c_str());
-
-                        mtx.unlock();
-                    }
+                    buffer[imgY].append("\033[0m\n");
+                    
                 };
                 threads.push_back(std::thread(xLoop));
             }
@@ -174,6 +176,11 @@ namespace cgi
             {
                 t.join();
             }
+            std::string finalBuffer = "";
+            for(auto s : buffer)
+                finalBuffer += s;
+            GoToXY(0,0);
+            cgi::PrintText(finalBuffer.c_str());
         }
     }
 }

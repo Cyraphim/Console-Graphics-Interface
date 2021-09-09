@@ -28,12 +28,7 @@ namespace cgi
 		unsigned int g = 0;
 		unsigned int b = 0;
 
-		SColor(unsigned int r, unsigned int g, unsigned int b):r(r), g(g), b(b){}
-
-		SColor()
-		{
-			SColor(0, 0, 0);
-		}
+		SColor(unsigned int r = 0, unsigned int g = 0, unsigned int b = 0):r(r), g(g), b(b){}
 
 		bool operator==(SColor const &other)
 		{
@@ -53,6 +48,24 @@ namespace cgi
 			return strout.str();
 		}
 	}; 
+
+	struct SVec2
+	{
+		int x;
+		int y;
+
+		SVec2(int x = 0, int y = 0) : x(x), y(y){}
+
+		bool operator==(SVec2 const& other)
+		{
+			return (this->x == other.x && this->y == other.y);
+		}
+
+		bool operator!=(SVec2 const& other)
+		{
+			return (this->x != other.x || this->y != other.y);
+		}
+	};
 
 
 	// Clears the Console Buffer
