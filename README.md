@@ -66,6 +66,10 @@ These are mostly ideas/suggestions, *might* get implemented:
 	  to make the draw calls on a separate thread so that we our 
 	  main thread calculations arent paused
 
+* An input system
+	- Something that reads the entire keyboard state and then
+	  polls is as required
+
 * An error messaging and debugging system
 	- We already print colored text onto the buffer but we also
 	  need a separate buffer that somehow displays the output 
