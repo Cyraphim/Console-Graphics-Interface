@@ -55,7 +55,7 @@ namespace cgi
 		double y;
 
 		SVec2(double x = 0, double y = 0) : x(x), y(y) {}
-		SVec2(int x = 0, int y = 0) : x(x), y(y) {}
+		SVec2(int x, int y) : x(x), y(y) {}
 
 		bool operator==(SVec2 const& other)
 		{
@@ -75,6 +75,21 @@ namespace cgi
 		SVec2 operator+(SVec2 const& other)
 		{
 			return SVec2(this->x + other.x, this->y + other.y);
+		}
+
+		SVec2 operator*(int const& other)
+		{
+			return SVec2(this->x + other, this->y + other);
+		}
+
+		SVec2 operator+=(SVec2 const& other)
+		{
+			return SVec2(this->x += other.x, this->y += other.y);
+		}
+
+		SVec2 operator-=(SVec2 const& other)
+		{
+			return SVec2(this->x -= other.x, this->y -= other.y);
 		}
 
 		double Magnitude()

@@ -1925,7 +1925,7 @@ typedef struct
     stbi_uc  values[256];
     stbi_uc  size[257];
     unsigned int maxcode[18];
-    int    delta[17];   // old 'firstsymbol' - old 'firstcode'
+    int    m_delta[17];   // old 'firstsymbol' - old 'firstcode'
 } stbi__huffman;
 
 typedef struct
@@ -1997,7 +1997,7 @@ static int stbi__build_huffman(stbi__huffman* h, int* count)
     k = 0;
     for (j = 1; j <= 16; ++j) {
         // compute delta to add to code to compute symbol id
-        h->delta[j] = k - code;
+        h->m_delta[j] = k - code;
         if (h->size[k] == j) {
             while (h->size[k] == j)
                 h->code[k++] = (stbi__uint16)(code++);
@@ -2113,7 +2113,7 @@ stbi_inline static int stbi__jpeg_huff_decode(stbi__jpeg* j, stbi__huffman* h)
         return -1;
 
     // convert the huffman code to the symbol id
-    c = ((j->code_buffer >> (32 - k)) & stbi__bmask[k]) + h->delta[k];
+    c = ((j->code_buffer >> (32 - k)) & stbi__bmask[k]) + h->m_delta[k];
     STBI_ASSERT((((j->code_buffer) >> (32 - h->size[c])) & stbi__bmask[h->size[c]]) == h->code[c]);
 
     // convert the id to a symbol

@@ -55,20 +55,20 @@ namespace cgi
             auto maxHeight = CConsoleBuffer::Instance()->GetHeight();
             auto maxWidth = CConsoleBuffer::Instance()->GetWidth();
 
-            for(size_t imgY = 0; imgY < imgHeight && imgY < maxHeight; imgY++)
+            for (size_t imgY = 0; imgY < imgHeight && imgY < maxHeight; imgY++)
             {
                 // if our row is negative then we dont need to draw it at all
-                if(y + imgY >= 0)
+                if (y + imgY >= 0)
                 {
                     // Multithreading the actual placement
                     // NOTE: Would it be faster if the entire function was asynchronous?
-                    auto xLoop = [ &sprite, &x, &y, &imgWidth, &maxWidth, imgY] ()
+                    auto xLoop = [&sprite, &x, &y, &imgWidth, &maxWidth, imgY]()
                     {
-                        for(size_t imgX = 0; imgX < maxWidth && imgX < imgWidth; imgX++)
+                        for (size_t imgX = 0; imgX < maxWidth && imgX < imgWidth; imgX++)
                         {
                             // If the pixel is black then why bother copying it at all
                             auto col = sprite.GetPixel(imgX, imgY);
-                            if(col != SColor::BLACK)
+                            if (col != SColor::BLACK)
                             {
                                 CConsoleBuffer::Instance()->PutPixel(col, x + imgX, y + imgY);
                             }
@@ -80,7 +80,7 @@ namespace cgi
             }
 
             // Wait for it all to end before ending the function
-            for(auto& t : threads)
+            for (auto& t : threads)
             {
                 t.join();
             }
@@ -88,26 +88,28 @@ namespace cgi
 
         void DrawImage(CSprite& sprite, SVec2 position)
         {
-            DrawImage(sprite, position.x, position.y);
+            DrawImage(sprite, (int) position.x, (int) position.y);
         }
 
         CSprite::CSprite(std::string filepath)
         {
-                this->width = 0;
-                this->height = 0;
-                int channels;
-                // Using STB to load image into memory regardless of extension
-                unsigned char* data = stbi_load(filepath.c_str(), (int*)&this->width, (int*)&this->height, &channels, 3);
+            this->m_width = 0;
+            this->m_height = 0;
+            int channels;
+            // Using STB to load image into memory regardless of extension
+            unsigned char* data = stbi_load(filepath.c_str(), (int*)&this->m_width, (int*)&this->m_height, &channels, 3);
 
-                for (int i = 0; i < this->width * this->height * 3; i += 3)
-                {
-                    imageData.push_back(SColor(data[i], data[i + 1], data[i + 2]));
-                }
-                stbi_image_free(data);           
+            for (int i = 0; i < this->m_width * this->m_height * 3; i += 3)
+            {
+                m_imageData.push_back(SColor(data[i], data[i + 1], data[i + 2]));
+            }
+            stbi_image_free(data);
         }
 
         CConsoleBuffer::CConsoleBuffer()
         {
+            ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+
             DWORD l_mode;
             HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
             GetConsoleMode(hStdout, &l_mode);
@@ -117,10 +119,8 @@ namespace cgi
 
             SetConsoleOutputCP(65001);
             // Get the console width and height and create a buffer
-            CONSOLE_SCREEN_BUFFER_INFO csbi;
-            GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-            m_screenWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-            m_screenHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+            COORD size;
+            SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), {m_screenWidth, m_screenHeight});
 
             m_consoleBuffer.insert(m_consoleBuffer.end(), m_screenWidth * m_screenHeight, SColor(0, 0, 0));
 
@@ -129,7 +129,7 @@ namespace cgi
         void CConsoleBuffer::ClearBuffer()
         {
             // Set everything to black
-            for(auto& color: m_consoleBuffer)
+            for (auto& color : m_consoleBuffer)
             {
                 color = SColor(0, 0, 0);
             }
@@ -174,7 +174,7 @@ namespace cgi
                     }
 
                     buffer[imgY].append("\033[0m\n");
-                    
+
                 };
                 threads.push_back(std::thread(xLoop));
             }
@@ -183,10 +183,12 @@ namespace cgi
             {
                 t.join();
             }
+
             std::string finalBuffer = "";
-            for(auto s : buffer)
+            for (auto s : buffer)
                 finalBuffer += s;
-            GoToXY(0,0);
+            GoToXY(0, 0);
+            
             cgi::PrintText(finalBuffer.c_str());
         }
     }

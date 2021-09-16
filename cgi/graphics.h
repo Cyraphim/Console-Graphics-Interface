@@ -1,10 +1,8 @@
 #pragma once
 #include "../cgi.h"
-#include "graphics.h"
 
 #include <string>
 #include <vector>
-
 
 namespace cgi
 {
@@ -20,31 +18,36 @@ namespace cgi
 		class CSprite
 		{
 			private:
-				size_t width;
-				size_t height;
-				std::vector<cgi::SColor> imageData;
+				size_t m_width;
+				size_t m_height;
+				std::vector<cgi::SColor> m_imageData;
 			public:
 				CSprite() = delete;
 				CSprite(CSprite&) = delete;
 				CSprite(std::string filepath);
 
+				~CSprite()
+				{
+					m_imageData.clear();
+				}
+
 				size_t GetHeight()
 				{
-					return this->height;
+					return this->m_height;
 				}
 				size_t GetWidth()
 				{
-					return this->width;
+					return this->m_width;
 				}
 
 				SColor GetPixel(size_t x, size_t y)
 				{
-					return imageData.at(width * y + x);
+					return m_imageData.at(m_width * y + x);
 				}
 
 				SColor GetPixel(SVec2 position)
 				{
-					return imageData.at(width * position.y + position.x);
+					return m_imageData.at(m_width * position.y + position.x);
 				}
 		};
 
@@ -60,8 +63,8 @@ namespace cgi
             static CConsoleBuffer* m_instance;
 
             std::vector<SColor> m_consoleBuffer;
-            size_t m_screenWidth;
-            size_t m_screenHeight;
+            short const m_screenWidth = 240;
+			short const m_screenHeight = 130;
 
 			const char* m_drawChar;
 
@@ -69,6 +72,13 @@ namespace cgi
             CConsoleBuffer();
             
         public:
+			~CConsoleBuffer()
+			{
+				m_drawChar = NULL;
+				m_instance = NULL;
+				delete this;
+			}
+
 			// Use this to get access to the console initializes when used
             static CConsoleBuffer* Instance()
             {
@@ -92,16 +102,11 @@ namespace cgi
 					m_consoleBuffer[m_screenWidth * y + x] = color;
 			}
 
-			void PutPixel(SColor& color, SVec2& position)
+			void PutPixel(SColor color, SVec2 position)
 			{
 				auto pos = m_screenWidth * position.y + position.x;
 				if (pos >= 0 && pos < m_consoleBuffer.size() - 1 && position.x >= 0)
 					m_consoleBuffer[pos] = color;
-			}
-
-			void ChangeDrawChar(const char* c)
-			{
-				m_drawChar = c;
 			}
 
 			// Gets the color at the given position
