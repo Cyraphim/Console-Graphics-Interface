@@ -107,7 +107,6 @@ namespace cgi
 
         CConsoleBuffer::CConsoleBuffer()
         {
-            ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
 
             DWORD l_mode;
             HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -120,6 +119,17 @@ namespace cgi
             // Get the console width and height and create a buffer
             COORD size;
             SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), {m_screenWidth, m_screenHeight});
+
+            CONSOLE_FONT_INFOEX cfi;
+            cfi.cbSize = sizeof(cfi);
+            cfi.nFont = 0;
+            cfi.dwFontSize.X = 8;
+            cfi.dwFontSize.Y = 8;
+            cfi.FontFamily = FF_DONTCARE;
+            cfi.FontWeight = FW_NORMAL;
+
+            SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
+            ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
 
             m_consoleBuffer.insert(m_consoleBuffer.end(), m_screenWidth * m_screenHeight, SColor(0, 0, 0));
 

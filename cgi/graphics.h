@@ -63,8 +63,8 @@ namespace cgi
             static CConsoleBuffer* m_instance;
 
             std::vector<SColor> m_consoleBuffer;
-            short const m_screenWidth = 240;
-			short const m_screenHeight = 130;
+            short const m_screenWidth = 128;
+			short const m_screenHeight = 128;
 
 			const char* m_drawChar;
 
