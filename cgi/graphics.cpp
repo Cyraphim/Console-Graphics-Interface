@@ -61,7 +61,6 @@ namespace cgi
                 if (y + imgY >= 0)
                 {
                     // Multithreading the actual placement
-                    // NOTE: Would it be faster if the entire function was asynchronous?
                     auto xLoop = [&sprite, &x, &y, &imgWidth, &maxWidth, imgY]()
                     {
                         for (size_t imgX = 0; imgX < maxWidth && imgX < imgWidth; imgX++)

@@ -24,6 +24,14 @@ namespace cgi
 	{
 
 		static SColor const BLACK;
+		static SColor const WHITE;
+		static SColor const RED;
+		static SColor const BLUE;
+		static SColor const GREEN;
+		static SColor const YELLOW;
+		static SColor const TEAL;
+		static SColor const PURPLE;
+
 		unsigned int r = 0;
 		unsigned int g = 0;
 		unsigned int b = 0;
@@ -109,7 +117,11 @@ namespace cgi
 
 	// Gets the next keyboard input from the player without
 	// waiting for an Return keypress
-	char GetCharInput(); 
+	char GetCharInput();
+
+	// Gets the next keyboard input from the player without
+	// waiting for an Return keypress asynchronously!
+	char GetAsyncCharInput();
 
 	// Get input using std::cin
 	// If input is invalid, clear the input stream, warn the user, and try again

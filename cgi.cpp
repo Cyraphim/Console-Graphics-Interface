@@ -11,6 +11,13 @@ namespace cgi
 {
 
 	SColor const SColor::BLACK;
+	SColor const SColor::WHITE(255, 255, 255);
+	SColor const SColor::RED(255, 0, 0);
+	SColor const SColor::BLUE(0, 0, 255);
+	SColor const SColor::GREEN(0, 255, 0);
+	SColor const SColor::YELLOW(255, 255, 0);
+	SColor const SColor::TEAL(0, 255, 255);
+	SColor const SColor::PURPLE(255, 0, 255);
 	void ClearScreen()
 	{
 		// Get the Win32 handle representing standard output.
@@ -54,6 +61,15 @@ namespace cgi
 	char GetCharInput()
 	{
 		return _getch();
+	}
+
+	char GetAsyncCharInput()
+	{
+		if(_kbhit())
+		{
+			return _getch();
+		}
+		return -1;
 	}
 
 	void PrintText(const char* format, ...)
